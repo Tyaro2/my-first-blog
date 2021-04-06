@@ -1,10 +1,11 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
-from .models import Post, Comment
+from .models import Post, Comment, FriendShip
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from sqlalchemy import create_engine
 from django.http import JsonResponse
 
@@ -91,3 +92,20 @@ def comment_remove(request, pk):
     comment.delete()
     return redirect('post_detail', pk=comment.post.pk)
 
+def like(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.like += 1
+    post.save()
+    return redirect(post_detail, pk)
+
+def users_follow(request, pk):
+    login_user = request.user
+    user = get_object_or_404(get_user_model(), pk=pk)
+    followees = login_user.followees.all()
+
+    if user in followees:
+        login_user.followees.remove(user)
+    else:
+        login_user.followees.add(user)
+    
+    return redirect('post_detail', pk=pk)

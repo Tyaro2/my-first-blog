@@ -6,9 +6,13 @@
             <div class="date">
                 <p>published: {{ post.published_date }}</p>
             </div>
+            <div class="author">
+                Author: {{ post.author }}
+            </div>
             <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
             <p>{{ post.text|linebreaksbr }}</p>
             <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}</a>
+            <p><a href="{% url 'like' post.pk %}"><span id="like">{{ post.like }}</span>いいね！</a></p>
         </div>
     {% endfor %}
 {% endblock %}

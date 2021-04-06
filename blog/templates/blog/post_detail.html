@@ -13,8 +13,15 @@
             <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon-pencil"></span></a>
             <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
+        {% if post.author %}
+            <div class="author">
+                Author: {{ post.author }}
+                <p><a class="btn btn-default" href="{% url 'users_follow' pk=post.pk %}">フォロー/フォロー解除</a></p>
+            </div>
+        {% endif %}
             <h2>{{ post.title }}</h2>
         <p>{{ post.text|linebreaksbr }}</p>
+        <p><a href="{% url 'like' post.pk %}"><span id="like">{{ post.like }}</span>いいね！</a></p>
     </div>
     <hr>
     <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
